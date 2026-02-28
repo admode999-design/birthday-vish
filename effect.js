@@ -1,8 +1,7 @@
-$(window).load(function(){
-	$('.loading').fadeOut('fast');
-	$('.container').fadeIn('fast');
-});
-$('document').ready(function(){
+$(document).ready(function(){
+	$('.loading').hide();
+	$('.container').show();
+
 	var vw;
 	$(window).resize(function(){
 		vw = $(window).width()/2;
@@ -39,39 +38,4 @@ $('document').ready(function(){
 		$('#bulb_yellow').addClass('bulb-glow-yellow-after');
 		$('#bulb_red').addClass('bulb-glow-red-after');
 		$('#bulb_blue').addClass('bulb-glow-blue-after');
-		$('#bulb_green').addClass('bulb-glow-green-after');
-		$('#bulb_pink').addClass('bulb-glow-pink-after');
-		$('#bulb_orange').addClass('bulb-glow-orange-after');
-		$('body').css('background-color','#FFF');
-		$('body').addClass('peach-after');
-		$(this).fadeOut('slow').delay(6000).promise().done(function(){
-			$('#bannar_coming').fadeIn('slow');
-		});
-	});
-
-	$('#bannar_coming').click(function(){
-		$('.bannar').addClass('bannar-come');
-		$(this).fadeOut('slow').delay(6000).promise().done(function(){
-			$('#balloons_flying').fadeIn('slow');
-		});
-	});
-
-	function loopOne() {
-		var randleft = 1000*Math.random();
-		var randtop = 500*Math.random();
-		$('#b1').animate({left:randleft,bottom:randtop},10000,function(){ loopOne(); });
-	}
-	function loopTwo() {
-		var randleft = 1000*Math.random();
-		var randtop = 500*Math.random();
-		$('#b2').animate({left:randleft,bottom:randtop},10000,function(){ loopTwo(); });
-	}
-	function loopThree() {
-		var randleft = 1000*Math.random();
-		var randtop = 500*Math.random();
-		$('#b3').animate({left:randleft,bottom:randtop},10000,function(){ loopThree(); });
-	}
-	function loopFour() {
-		var randleft = 1000*Math.random();
-		var randtop = 500*Math.random();
-		$('#b4').animate({left:randleft,bottom:randtop},10000,function(){ loopFour();
+		$('#bulb_green').
