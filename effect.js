@@ -2,43 +2,43 @@ $(document).ready(function(){
 
 	$('.loading').hide();
 	$('.container').show();
+	$('.message').hide();
+	$('.cake').hide();
+	$('.bannar').hide();
+	$('.balloon-border').hide();
+	$('.balloons').hide();
+	$('.fuego').hide();
 
 	$('#turn_on').click(function(){
-		var lightsOn = $(this).data('on');
-		if(!lightsOn){
-			$(this).data('on', true);
-			$('.bulb').each(function(){
-				var id = $(this).attr('id');
-				if(id === 'bulb_yellow') $(this).css({'background-image':'url(bulb_yellow.png)','box-shadow':'0 0 15px 5px #FFD700'});
-				if(id === 'bulb_red')    $(this).css({'background-image':'url(bulb_red.png)','box-shadow':'0 0 15px 5px #FF0000'});
-				if(id === 'bulb_blue')   $(this).css({'background-image':'url(bulb_blue.png)','box-shadow':'0 0 15px 5px #0000FF'});
-				if(id === 'bulb_green')  $(this).css({'background-image':'url(bulb_green.png)','box-shadow':'0 0 15px 5px #00FF00'});
-				if(id === 'bulb_pink')   $(this).css({'background-image':'url(bulb_pink.png)','box-shadow':'0 0 15px 5px #FF69B4'});
-				if(id === 'bulb_orange') $(this).css({'background-image':'url(bulb_orange.png)','box-shadow':'0 0 15px 5px #FF8C00'});
-			});
-			$('body').css('background-color','#FDEBD0');
-			$(this).fadeOut('slow').delay(3000).promise().done(function(){
-				$('#holi').fadeIn('slow');
-			});
-		}
+		$('#bulb_yellow').css('background-image','url(bulb_yellow.png)');
+		$('#bulb_red').css('background-image','url(bulb_red.png)');
+		$('#bulb_blue').css('background-image','url(bulb_blue.png)');
+		$('#bulb_green').css('background-image','url(bulb_green.png)');
+		$('#bulb_pink').css('background-image','url(bulb_pink.png)');
+		$('#bulb_orange').css('background-image','url(bulb_orange.png)');
+		$('body').css('background-color','#FDEBD0');
+		$(this).fadeOut('slow').delay(3000).promise().done(function(){
+			$('#holi').fadeIn('slow');
+		});
 	});
 
 	$('#holi').click(function(){
-		$(this).prop('disabled', true).text('🌈 Holi Hai! 🌈');
+		$(this).prop('disabled',true).text('🌈 Holi Hai! 🌈');
 		startHoli();
 	});
 
 	$('#play').click(function(){
 		var audio = $('.song')[0];
 		audio.play();
-		$('body').css('background-color','#FFF5F5');
-		$(this).fadeOut('slow').delay(6000).promise().done(function(){
+		$('body').css('background-color','#FDEBD0');
+		$(this).fadeOut('slow').delay(4000).promise().done(function(){
 			$('#bannar_coming').fadeIn('slow');
 		});
 	});
 
 	$('#bannar_coming').click(function(){
-		$('.bannar').show().css({opacity:0, marginTop:'-100px'}).animate({opacity:1, marginTop:'0'},1000);
+		$('.bannar').fadeIn('slow');
+		$('.balloon-border').fadeIn('slow');
 		$(this).fadeOut('slow').delay(4000).promise().done(function(){
 			$('#balloons_flying').fadeIn('slow');
 		});
@@ -53,7 +53,7 @@ $(document).ready(function(){
 	function loopSeven() { $('#b7').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSeven); }
 
 	$('#balloons_flying').click(function(){
-		$('.balloon-border').animate({top:-500},8000);
+		$('.balloons').fadeIn('slow');
 		$('#b1,#b4,#b5,#b7').addClass('balloons-rotate-behaviour-one');
 		$('#b2,#b3,#b6').addClass('balloons-rotate-behaviour-two');
 		loopOne(); loopTwo(); loopThree(); loopFour(); loopFive(); loopSix(); loopSeven();
@@ -106,8 +106,8 @@ $(document).ready(function(){
 			$('.message').fadeIn('slow');
 		});
 		var i = 1;
-		function msgLoop(i) {
-			$("p:nth-child("+i+")").fadeIn('slow').delay(1000).fadeOut('slow').promise().done(function(){
+		function msgLoop(i){
+			$('.message p:nth-child('+i+')').fadeIn('slow').delay(1000).fadeOut('slow').promise().done(function(){
 				i = i+1;
 				if(i <= 14){ msgLoop(i); }
 			});
@@ -140,5 +140,5 @@ function startHoli(){
 	];
 	throws.forEach(t => setTimeout(() => burst(t.ox, t.oy, t.dx, t.dy, t.c), t.d));
 	setTimeout(() => { running = false; }, 2200);
-	setTimeout(() => { $('#play').fadeIn('slow'); }, 3200);
+	setTimeout(() => { $('#holi').fadeOut('slow'); $('#play').fadeIn('slow'); }, 3200);
 }
