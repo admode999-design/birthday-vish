@@ -9,6 +9,7 @@ $(document).ready(function(){
 	$('.balloons').hide();
 	$('.fuego').hide();
 
+	// STEP 1 - Turn On Lights
 	$('#turn_on').click(function(){
 		$('#bulb_yellow').css('background-image','url(bulb_yellow.png)');
 		$('#bulb_red').css('background-image','url(bulb_red.png)');
@@ -22,38 +23,42 @@ $(document).ready(function(){
 		});
 	});
 
+	// STEP 2 - Holi
 	$('#holi').click(function(){
 		$(this).prop('disabled',true).text('🌈 Holi Hai! 🌈');
 		startHoli();
 	});
 
+	// STEP 3 - Play Music
 	$('#play').click(function(){
-		var audio = $('.song')[0];
-		audio.play();
+		$('.song')[0].play();
 		$('body').css('background-color','#FDEBD0');
 		$(this).fadeOut('slow').delay(4000).promise().done(function(){
 			$('#bannar_coming').fadeIn('slow');
 		});
 	});
 
+	// STEP 4 - Decorate
 	$('#bannar_coming').click(function(){
-		$('.bannar').fadeIn('slow');
-		$('.balloon-border').fadeIn('slow');
+		$('.bannar').show();
+		$('.balloon-border').show();
 		$(this).fadeOut('slow').delay(4000).promise().done(function(){
 			$('#balloons_flying').fadeIn('slow');
 		});
 	});
 
-	function loopOne()   { $('#b1').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopOne); }
-	function loopTwo()   { $('#b2').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopTwo); }
-	function loopThree() { $('#b3').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopThree); }
-	function loopFour()  { $('#b4').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFour); }
-	function loopFive()  { $('#b5').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFive); }
-	function loopSix()   { $('#b6').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSix); }
-	function loopSeven() { $('#b7').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSeven); }
+	// STEP 5 - Balloons
+	function loopOne()   { if($('#b1').length){ $('#b1').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopOne); }}
+	function loopTwo()   { if($('#b2').length){ $('#b2').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopTwo); }}
+	function loopThree() { if($('#b3').length){ $('#b3').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopThree); }}
+	function loopFour()  { if($('#b4').length){ $('#b4').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFour); }}
+	function loopFive()  { if($('#b5').length){ $('#b5').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFive); }}
+	function loopSix()   { if($('#b6').length){ $('#b6').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSix); }}
+	function loopSeven() { if($('#b7').length){ $('#b7').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSeven); }}
 
 	$('#balloons_flying').click(function(){
-		$('.balloons').fadeIn('slow');
+		$('.balloons').show();
+		$('.balloon-border').animate({top:-500},8000);
 		$('#b1,#b4,#b5,#b7').addClass('balloons-rotate-behaviour-one');
 		$('#b2,#b3,#b6').addClass('balloons-rotate-behaviour-two');
 		loopOne(); loopTwo(); loopThree(); loopFour(); loopFive(); loopSix(); loopSeven();
@@ -62,6 +67,7 @@ $(document).ready(function(){
 		});
 	});
 
+	// STEP 6 - Cake
 	$('#cake_fadein').click(function(){
 		$('.cake').fadeIn('slow');
 		$(this).fadeOut('slow').delay(3000).promise().done(function(){
@@ -69,6 +75,7 @@ $(document).ready(function(){
 		});
 	});
 
+	// STEP 7 - Candles
 	$('#light_candle').click(function(){
 		$('.fuego').fadeIn('slow');
 		$(this).fadeOut('slow').promise().done(function(){
@@ -76,6 +83,7 @@ $(document).ready(function(){
 		});
 	});
 
+	// STEP 8 - Happy Birthday balloons
 	$('#wish_message').click(function(){
 		var vw = $(window).width()/2;
 		$('#b1,#b2,#b3,#b4,#b5,#b6,#b7').stop();
@@ -100,19 +108,20 @@ $(document).ready(function(){
 		});
 	});
 
+	// STEP 9 - Message
 	$('#story').click(function(){
 		$(this).fadeOut('slow');
 		$('.cake').fadeOut('fast').promise().done(function(){
-			$('.message').fadeIn('slow');
+			$('.message').show();
+			var i = 1;
+			function msgLoop(i){
+				$('.message p:nth-child('+i+')').fadeIn('slow').delay(1500).fadeOut('slow').promise().done(function(){
+					i = i + 1;
+					if(i <= 14){ msgLoop(i); }
+				});
+			}
+			msgLoop(1);
 		});
-		var i = 1;
-		function msgLoop(i){
-			$('.message p:nth-child('+i+')').fadeIn('slow').delay(1000).fadeOut('slow').promise().done(function(){
-				i = i+1;
-				if(i <= 14){ msgLoop(i); }
-			});
-		}
-		msgLoop(1);
 	});
 
 });
@@ -140,5 +149,5 @@ function startHoli(){
 	];
 	throws.forEach(t => setTimeout(() => burst(t.ox, t.oy, t.dx, t.dy, t.c), t.d));
 	setTimeout(() => { running = false; }, 2200);
-	setTimeout(() => { $('#holi').fadeOut('slow'); $('#play').fadeIn('slow'); }, 3200);
+	setTimeout(() => { $('#holi').fadeOut(); $('#play').fadeIn('slow'); }, 3200);
 }
