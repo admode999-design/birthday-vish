@@ -118,8 +118,11 @@ body {
 	height: 50px;
 	margin: auto;
 	background-repeat: no-repeat no-repeat;
-	background-position:center 0px;
+	background-position: center 0px;
 	background-size: 50px 50px;
+	background-color: transparent !important;
+	border: none !important;
+	box-shadow: none;
 }
 
 .bulb-holder {
