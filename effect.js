@@ -51,4 +51,14 @@ $(document).ready(function() {
     $(".message").fadeIn();
     $("html, body").animate({ scrollTop: $(".message").offset().top }, "slow");
   });
+
+  // Fix navbar so all buttons visible
+  $(".navbar-fixed-bottom").css({
+    "position": "relative",
+    "bottom": "auto",
+    "margin-top": "30px"
+  });
+
+  // Show banner image
+  $(".bannar").show();
 });
