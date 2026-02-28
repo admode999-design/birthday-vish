@@ -25,7 +25,15 @@ $('document').ready(function(){
 		$('#bulb_orange').addClass('bulb-glow-orange');
 		$('body').addClass('peach');
 		$(this).fadeOut('slow').delay(5000).promise().done(function(){
-			$('#play').fadeIn('slow');
+			$('#holi').fadeIn('slow');
+		});
+	});
+
+	
+
+	function showAfterHoli(){
+		$('#play').fadeIn('slow');
+	};
 		});
 	});
 	$('#play').click(function(){
@@ -40,10 +48,11 @@ $('document').ready(function(){
 		$('body').css('backgroud-color','#FFF');
 		$('body').addClass('peach-after');
 		$(this).fadeOut('slow').delay(6000).promise().done(function(){
+			$('#bannar_coming').fadeIn
 			$('#bannar_coming').fadeIn('slow');
 		});
 	});
-
+	
 	$('#bannar_coming').click(function(){
 		$('.bannar').addClass('bannar-come');
 		$(this).fadeOut('slow').delay(6000).promise().done(function(){
@@ -199,3 +208,29 @@ $('document').ready(function(){
 
 
 //alert('hello');
+
+function startHoli(){
+  running=true;
+  requestAnimationFrame(holiLoop);
+  const W=canvas.width,H=canvas.height;
+  const throws=[
+    {d:0,ox:-5,oy:H*.3,dx:1,dy:0.1,c:colors[0]},
+    {d:200,ox:-5,oy:H*.55,dx:1,dy:0.05,c:colors[2]},
+    {d:400,ox:-5,oy:H*.75,dx:1,dy:-0.1,c:colors[3]},
+    {d:100,ox:W+5,oy:H*.25,dx:-1,dy:0.15,c:colors[4]},
+    {d:300,ox:W+5,oy:H*.5,dx:-1,dy:0.05,c:colors[5]},
+    {d:500,ox:W+5,oy:H*.7,dx:-1,dy:-0.1,c:colors[1]},
+    {d:550,ox:W*.2,oy:-5,dx:0.1,dy:1,c:colors[6]},
+    {d:650,ox:W*.5,oy:-5,dx:0,dy:1,c:colors[7]},
+    {d:750,ox:W*.8,oy:-5,dx:-0.1,dy:1,c:colors[8]},
+    {d:1000,ox:-5,oy:H*.4,dx:1,dy:0.2,c:colors[9]},
+    {d:1100,ox:W+5,oy:H*.35,dx:-1,dy:0.15,c:colors[0]},
+    {d:1200,ox:W*.15,oy:-5,dx:0.2,dy:1,c:colors[3]},
+    {d:1300,ox:W*.85,oy:-5,dx:-0.2,dy:1,c:colors[5]},
+    {d:1600,ox:-5,oy:H*.45,dx:1,dy:0,c:colors[2]},
+    {d:1650,ox:W+5,oy:H*.45,dx:-1,dy:0,c:colors[6]},
+  ];
+  throws.forEach(t=>setTimeout(()=>burst(t.ox,t.oy,t.dx,t.dy,t.c),t.d));
+  setTimeout(()=>{running=false;},2200);
+  setTimeout(()=>{ $('#play').fadeIn('slow'); },3200);
+}
