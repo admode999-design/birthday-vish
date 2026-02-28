@@ -4,21 +4,18 @@ $(document).ready(function(){
 	$('.container').show();
 	$('.message').hide();
 	$('.cake').hide();
-	$('.bannar').hide();
-	$('.balloon-border').hide();
-	$('.balloons').hide();
 	$('.fuego').hide();
 
 	// STEP 1 - Turn On Lights
 	$('#turn_on').click(function(){
-		$('#bulb_yellow').css('background-image','url(bulb_yellow.png)');
-		$('#bulb_red').css('background-image','url(bulb_red.png)');
-		$('#bulb_blue').css('background-image','url(bulb_blue.png)');
-		$('#bulb_green').css('background-image','url(bulb_green.png)');
-		$('#bulb_pink').css('background-image','url(bulb_pink.png)');
-		$('#bulb_orange').css('background-image','url(bulb_orange.png)');
-		$('body').css('background-color','#FDEBD0');
-		$(this).fadeOut('slow').delay(3000).promise().done(function(){
+		$('#bulb_yellow').addClass('bulb-glow-yellow');
+		$('#bulb_red').addClass('bulb-glow-red');
+		$('#bulb_blue').addClass('bulb-glow-blue');
+		$('#bulb_green').addClass('bulb-glow-green');
+		$('#bulb_pink').addClass('bulb-glow-pink');
+		$('#bulb_orange').addClass('bulb-glow-orange');
+		$('body').addClass('peach');
+		$(this).fadeOut('slow').delay(5000).promise().done(function(){
 			$('#holi').fadeIn('slow');
 		});
 	});
@@ -32,32 +29,37 @@ $(document).ready(function(){
 	// STEP 3 - Play Music
 	$('#play').click(function(){
 		$('.song')[0].play();
-		$('body').css('background-color','#FDEBD0');
-		$(this).fadeOut('slow').delay(4000).promise().done(function(){
+		$('#bulb_yellow').addClass('bulb-glow-yellow-after');
+		$('#bulb_red').addClass('bulb-glow-red-after');
+		$('#bulb_blue').addClass('bulb-glow-blue-after');
+		$('#bulb_green').addClass('bulb-glow-green-after');
+		$('#bulb_pink').addClass('bulb-glow-pink-after');
+		$('#bulb_orange').addClass('bulb-glow-orange-after');
+		$('body').addClass('peach-after');
+		$(this).fadeOut('slow').delay(6000).promise().done(function(){
 			$('#bannar_coming').fadeIn('slow');
 		});
 	});
 
-	// STEP 4 - Decorate
+	// STEP 4 - Decorate (banner drops down using original class)
 	$('#bannar_coming').click(function(){
-		$('.bannar').show();
-		$('.balloon-border').show();
-		$(this).fadeOut('slow').delay(4000).promise().done(function(){
+		$('.bannar').addClass('bannar-come');
+		$('.balloon-border').fadeIn('slow');
+		$(this).fadeOut('slow').delay(6000).promise().done(function(){
 			$('#balloons_flying').fadeIn('slow');
 		});
 	});
 
-	// STEP 5 - Balloons
-	function loopOne()   { if($('#b1').length){ $('#b1').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopOne); }}
-	function loopTwo()   { if($('#b2').length){ $('#b2').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopTwo); }}
-	function loopThree() { if($('#b3').length){ $('#b3').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopThree); }}
-	function loopFour()  { if($('#b4').length){ $('#b4').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFour); }}
-	function loopFive()  { if($('#b5').length){ $('#b5').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFive); }}
-	function loopSix()   { if($('#b6').length){ $('#b6').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSix); }}
-	function loopSeven() { if($('#b7').length){ $('#b7').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSeven); }}
+	// STEP 5 - Balloons flying
+	function loopOne()   { $('#b1').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopOne); }
+	function loopTwo()   { $('#b2').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopTwo); }
+	function loopThree() { $('#b3').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopThree); }
+	function loopFour()  { $('#b4').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFour); }
+	function loopFive()  { $('#b5').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopFive); }
+	function loopSix()   { $('#b6').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSix); }
+	function loopSeven() { $('#b7').animate({left:1000*Math.random(),bottom:500*Math.random()},10000,loopSeven); }
 
 	$('#balloons_flying').click(function(){
-		$('.balloons').show();
 		$('.balloon-border').animate({top:-500},8000);
 		$('#b1,#b4,#b5,#b7').addClass('balloons-rotate-behaviour-one');
 		$('#b2,#b3,#b6').addClass('balloons-rotate-behaviour-two');
@@ -83,7 +85,7 @@ $(document).ready(function(){
 		});
 	});
 
-	// STEP 8 - Happy Birthday balloons
+	// STEP 8 - Happy Birthday balloons center
 	$('#wish_message').click(function(){
 		var vw = $(window).width()/2;
 		$('#b1,#b2,#b3,#b4,#b5,#b6,#b7').stop();
@@ -116,7 +118,7 @@ $(document).ready(function(){
 			var i = 1;
 			function msgLoop(i){
 				$('.message p:nth-child('+i+')').fadeIn('slow').delay(1500).fadeOut('slow').promise().done(function(){
-					i = i + 1;
+					i = i+1;
 					if(i <= 14){ msgLoop(i); }
 				});
 			}
