@@ -31,6 +31,7 @@
 
 <body>
 	<div class="loading" style="display:none;"></div>
+<canvas id="holi-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:999;"></canvas>
 <style>
 .container { display: block !important; opacity: 1 !important; }
 .message { display: block !important; opacity: 1 !important; }
@@ -130,7 +131,8 @@ body { background: #1a0a2e; }
 			<div class="row">
 				<div class="col-md-6 text-center col-md-offset-3">
 					<button class="btn btn-primary" id="turn_on">Turn On Lights</button>
-					<button class="btn btn-primary" id="play">Play Music</button>
+					<button class="btn btn-primary" id="holi">🌈 Let's Play Holi!</button>
+<button class="btn btn-primary" id="play" style="display:none;">Play Music</button>
 					<button class="btn btn-primary" id="bannar_coming">Let's Decorate</button>
 					<button class="btn btn-primary" id="balloons_flying">Fly With Balloons</button>
 					<button class="btn btn-primary" id="cake_fadein">Most Delicious Cake Ever</button>
@@ -158,4 +160,106 @@ body { background: #1a0a2e; }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="effect.js"></script>
+<script>
+const canvas = document.getElementById('holi-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+let running = false;
+const colors = ['#ff2244','#ff6600','#ffdd00','#00cc44','#0099ff','#cc00ff','#ff44aa','#00ffcc','#ff9900','#9900ff'];
+
+class Particle {
+  constructor(x,y,vx,vy,color,size,type){
+    this.x=x;this.y=y;this.vx=vx;this.vy=vy;
+    this.color=color;this.size=size;this.type=type;
+    this.alpha=0.92;this.life=1;
+    this.gravity=type==='powder'?0.05:0.28;
+    this.drag=type==='powder'?0.93:0.985;
+    this.decay=type==='powder'?0.022:0.007;
+  }
+  update(){
+    this.vy+=this.gravity;this.vx*=this.drag;this.vy*=this.drag;
+    this.x+=this.vx;this.y+=this.vy;
+    if(this.type==='drop'){
+      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);
+      if(spd<1.5)this.decay=0.06;
+    }
+    this.life-=this.decay;this.alpha=Math.max(0,this.life);
+  }
+  draw(){
+    if(this.alpha<=0.01)return;
+    ctx.save();ctx.globalAlpha=this.alpha;
+    if(this.type==='powder'){
+      const r=this.size*(2-this.life);
+      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,Math.max(1,r));
+      g.addColorStop(0,this.color+'cc');g.addColorStop(0.5,this.color+'55');g.addColorStop(1,this.color+'00');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(this.x,this.y,Math.max(1,r),0,Math.PI*2);ctx.fill();
+    } else {
+      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);
+      const angle=Math.atan2(this.vy,this.vx);
+      ctx.translate(this.x,this.y);ctx.rotate(angle);ctx.scale(1+spd*0.09,1);
+      ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(0,0,this.size,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+  }
+  isDead(){return this.life<=0;}
+}
+
+function burst(ox,oy,dirX,dirY,color){
+  const baseAngle=Math.atan2(dirY,dirX);
+  const speed=Math.random()*9+13;
+  for(let i=0;i<55;i++){
+    const spread=(Math.random()-0.5)*0.45;
+    const spd=speed*(0.5+Math.random()*0.8);
+    const a=baseAngle+spread;
+    particles.push(new Particle(ox,oy,Math.cos(a)*spd,Math.sin(a)*spd-Math.random()*1.5,color,Math.random()*5+2,'drop'));
+  }
+  for(let i=0;i<30;i++){
+    const spread=(Math.random()-0.5)*1.1;
+    const spd=Math.random()*4+2;
+    const a=baseAngle+spread;
+    particles.push(new Particle(ox,oy,Math.cos(a)*spd,Math.sin(a)*spd-Math.random()*2,color,Math.random()*18+10,'powder'));
+  }
+}
+
+function holiLoop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles=particles.filter(p=>!p.isDead());
+  particles.forEach(p=>{p.update();p.draw();});
+  if(running||particles.length>0)requestAnimationFrame(holiLoop);
+}
+
+function startHoli(){
+  running=true;
+  requestAnimationFrame(holiLoop);
+  const W=canvas.width,H=canvas.height;
+  const throws=[
+    {d:0,ox:-5,oy:H*.3,dx:1,dy:0.1,c:colors[0]},
+    {d:200,ox:-5,oy:H*.55,dx:1,dy:0.05,c:colors[2]},
+    {d:400,ox:-5,oy:H*.75,dx:1,dy:-0.1,c:colors[3]},
+    {d:100,ox:W+5,oy:H*.25,dx:-1,dy:0.15,c:colors[4]},
+    {d:300,ox:W+5,oy:H*.5,dx:-1,dy:0.05,c:colors[5]},
+    {d:500,ox:W+5,oy:H*.7,dx:-1,dy:-0.1,c:colors[1]},
+    {d:550,ox:W*.2,oy:-5,dx:0.1,dy:1,c:colors[6]},
+    {d:650,ox:W*.5,oy:-5,dx:0,dy:1,c:colors[7]},
+    {d:750,ox:W*.8,oy:-5,dx:-0.1,dy:1,c:colors[8]},
+    {d:1000,ox:-5,oy:H*.4,dx:1,dy:0.2,c:colors[9]},
+    {d:1100,ox:W+5,oy:H*.35,dx:-1,dy:0.15,c:colors[0]},
+    {d:1200,ox:W*.15,oy:-5,dx:0.2,dy:1,c:colors[3]},
+    {d:1300,ox:W*.85,oy:-5,dx:-0.2,dy:1,c:colors[5]},
+    {d:1600,ox:-5,oy:H*.45,dx:1,dy:0,c:colors[2]},
+    {d:1650,ox:W+5,oy:H*.45,dx:-1,dy:0,c:colors[6]},
+  ];
+  throws.forEach(t=>setTimeout(()=>burst(t.ox,t.oy,t.dx,t.dy,t.c),t.d));
+  setTimeout(()=>{running=false;},2200);
+  setTimeout(()=>{ $('#play').fadeIn(); },3200);
+}
+
+$('#holi').click(function(){
+  $(this).prop('disabled',true).text('🌈 Holi Hai! 🌈');
+  startHoli();
+});
+</script>
 </html>
